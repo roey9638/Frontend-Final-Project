@@ -41,7 +41,7 @@ function App() {
     //Here I'm checking if we [pass] an [id] to this [functions]
     activity.id ?
     //if we [pass] an [id] to this [functions].
-    //Then we [check/filter] all the [activities] that [!==/not euqal] to the [id] [we [pass]] into this [function] then will add this new [activity]
+    //Then we [Remove] the [activity] that we [Edit/Updating]. then will Replace it with the new [activity] that we [pass] into the [function]
     setActivities([...activities.filter(x => x.id !== activity.id), activity])
     //if we [NOT] [pass] an [id] to this [functions]. Then will [create] and [Add] new [activity] to the [array] [activities]. and we make that the [id] of the [new activity] will have a [random id]
     : setActivities([...activities, {...activity, id: uuid()}]);
