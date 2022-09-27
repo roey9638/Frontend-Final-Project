@@ -20,6 +20,28 @@ export default class ActivityStore {
             Date.parse(a.date) - Date.parse(b.date));
     }
 
+    get groupedActivities() {
+        return Object.entries(
+            //Here we geting the [activitiesByDate] [function] that [return] an [array] of [dates]. Continue Down VV.
+            //Then we do [reduce] to this [array]. and [reduce] is making a [Object] ou of this [array]. Continue Down VV.
+            //And it needs to Params (activities, activity). the [activities] [List] and individual [activity]
+            this.activitiesByDate.reduce((activities, activity) => {
+                //Here I'm [geting] the [date] of each individual [activity]. And we split the [date] in the [setActivity] [function]. Continue Down VV.
+                //It will [repesent] our [key] [for each] [objects]
+                const date = activity.date;
+                //Here ( activities[date] = activities[date] ) we access with the [property] [date] inside [activities] the that match that [date]. Continue Down VV.
+                //If its [TRUE] we do ( [...activities[date], activity] ) -> which what is does is [...activities/spread/copy] then [specify] which [object] in the [array] we want with [[date]/...activities( [date])]. Continue Down VV.
+                //Then we add the [, activity] that we [executing] this [callback] [function]
+                //And if its not [TRUE] we do what after the (:), we will create new [array] with that [activity]
+                activities[date] = activities[date] ? [...activities[date], activity] : [activity];
+                return activities;
+                //We need to give  a [starting object] to [reduce] [function] and he will have [initialValue].
+                //We [specify] that [starting object] as ([key: string]) as the type of our key for the object. And the [Value] of ([key: string]) is [gonna] be [Activity[]]
+                //[Important] --> Now we have an [array] of [Objects].And The [key: string] is gonna be the [activity.date] and [For Each] [date] we will Have an [Array] of [Activitites] inside that [date]
+            }, {} as {[key: string]: Activity[]})
+        )
+    }
+
     loadActivities = async () => {
         //this.setLoadingInitial(true);
         this.loadingInitial = true;
