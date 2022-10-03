@@ -39,7 +39,9 @@ function App() {
                 <Route key={location.key} path={['/createActivity', '/manage/:id']} component={ActivityForm} />
                 <Route path='/errors' component={TestErrors} />
                 <Route path='/server-error' component={ServerError} />
-                <Route component={NotFound} />
+
+                {/* Anything that [dosent match] the [Routes] [above this] line^^. Will be t[aken] to this [Route] [NotFound]. To [make] this [work] we [put all] the [Routes] [inside] [<Switch> </Switch>] */}
+                <Route component={NotFound} /> 
 
               </Switch>
             </Container>

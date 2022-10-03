@@ -46,7 +46,9 @@ export default function TestErrors() {
                 </Button.Group>
             </Segment>
 
+            {/* Here i want to [check] that the [errors state] is [not empty] which we [set him] in the [handleValidationError] [function] in the [setErrors(err)]*/}
             {errors &&
+                //if we Have [Errors] in the [errors state] will [pass them] [into] the [ValidationErrors Component] in [order] to [display] them.
                 <ValidationErrors errors={errors} />
             }
         </>
