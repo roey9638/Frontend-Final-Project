@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Activity } from "../Models/activity";
+import {format} from 'date-fns';
 
 
 export default class ActivityStore {
@@ -9,7 +10,7 @@ export default class ActivityStore {
     selectedActivity: Activity | undefined = undefined;
     editMode = false;
     loading = false;
-    loadingInitial = true;
+    loadingInitial = false;
 
     constructor() {
         makeAutoObservable(this)
@@ -17,7 +18,7 @@ export default class ActivityStore {
 
     get activitiesByDate() {
         return Array.from(this.activityRegistry.values()).sort((a, b) =>
-            Date.parse(a.date) - Date.parse(b.date));
+            a.date!.getTime() - b.date!.getTime());
     }
 
     get groupedActivities() {
@@ -26,9 +27,10 @@ export default class ActivityStore {
             //Then we do [reduce] to this [array]. and [reduce] is making a [Object] ou of this [array]. Continue Down VV.
             //And it needs to Params (activities, activity). the [activities] [List] and individual [activity]
             this.activitiesByDate.reduce((activities, activity) => {
-                //Here I'm [geting] the [date] of each individual [activity]. And we split the [date] in the [setActivity] [function]. Continue Down VV.
+                //Here I'm [geting] the [date] of each individual [activity]. And we split the [date]. Continue Down VV.
                 //It will [repesent] our [key] [for each] [objects]
-                const date = activity.date;
+                const date = format(activity.date!, 'dd MMM yyyy')
+
                 //Here ( activities[date] = activities[date] ) we access with the [property] [date] inside [activities] the that match that [date]. Continue Down VV.
                 //If its [TRUE] we do ( [...activities[date], activity] ) -> which what is does is [...activities/spread/copy] then [specify] which [object] in the [array] we want with [[date]/...activities( [date])]. Continue Down VV.
                 //Then we add the [, activity] that we [executing] this [callback] [function]
@@ -43,7 +45,6 @@ export default class ActivityStore {
     }
 
     loadActivities = async () => {
-        //this.setLoadingInitial(true);
         this.loadingInitial = true;
         try {
             const activities = await agent.Activities.list();
@@ -66,7 +67,6 @@ export default class ActivityStore {
             return activity;
         }
         else {
-            //this.setLoadingInitial(true);
             this.loadingInitial = true;
             try {
                 activity = await agent.Activities.details(id);
@@ -86,7 +86,7 @@ export default class ActivityStore {
 
     private setActivity = (activity: Activity) => {
         //This [activity.date.split('T')[0];] will [split] the [first part] of the [array] becuase of this ([0]), so that we only see the [dd/mm/yyy]
-        activity.date = activity.date.split('T')[0];
+        activity.date = new Date(activity.date!);
         this.activityRegistry.set(activity.id, activity);
     }
 
