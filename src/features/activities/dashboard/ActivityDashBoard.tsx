@@ -25,7 +25,7 @@ export default observer(function ActivityDashBoard() {
     //What this do - If The [activityStore.loadingInitial] which is a [property] in [ActivityStore.ts]. then will [return/execute] the [<LoadingComponent content='Loading app' />].
     if (activityStore.loadingInitial) 
     {
-        return <LoadingComponent content='Loading app' />
+        return <LoadingComponent content='Loading activities...' />
     }
 
     return (

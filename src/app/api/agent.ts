@@ -5,6 +5,8 @@ import { Activity } from "../Models/activity";
 import { toast } from "react-toastify";
 import { history } from "../..";
 import { store } from "../stores/store";
+import { User, UserFormValues } from "../Models/user";
+import { config } from "process";
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
@@ -13,6 +15,15 @@ const sleep = (delay: number) => {
 }
 
 axios.defaults.baseURL = 'http://localhost:5000/api/';
+
+axios.interceptors.request.use(config => {
+    const token = store.commonStore.token;
+
+    //This will [Make Sure] that we will [Send] a [token] with [Every] [Request]. Continue Down VV
+    //When We [Have] a [token] in our [commonStore]
+    if (token) config.headers!.Authorization = `Bearer ${token}`
+    return config;
+})
 
 axios.interceptors.response.use(async response => {
     await sleep(1000);
@@ -98,8 +109,15 @@ const Activities = {
     delete: (id: string) => requests.del<void>(`/activities/${id}`)
 }
 
+const Account = {
+    current: () => requests.get<User>('/account'),
+    login: (user: UserFormValues) => requests.post<User>('/account/login', user),
+    register: (user: UserFormValues) => requests.post<User>('/account/register', user)
+}
+
 const agent = {
-    Activities
+    Activities,
+    Account
 }
 
 export default agent;
