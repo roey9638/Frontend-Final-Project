@@ -12,7 +12,7 @@ import MyTextArea from "./MyTextArea";
 import { categoryOptions } from "../../../app/common/options/categoryOptions";
 import MySelectInput from "./MySelectInput";
 import MyDateInput from "./MyDateInput";
-import { Activity } from "../../../app/Models/activity";
+import { ActivityFormValues } from "../../../app/Models/activity";
 
 
 
@@ -21,19 +21,10 @@ export default observer(function ActivityForm() {
     //The [useHistory] will take to the [Route/Component] that i want. I [use it] in the [handleSubmit()] [function].
     const history = useHistory();
     const { activityStore } = useStore();
-    const { createActivity, updateActivity,
-        loading, loadActivity, loadingInitial } = activityStore;
+    const { createActivity, updateActivity, loadActivity, loadingInitial } = activityStore;
     const { id } = useParams<{ id: string }>();
 
-    const [activity, setActivity] = useState<Activity>({
-        id: '',
-        title: '',
-        category: '',
-        description: '',
-        date: null,
-        city: '',
-        venue: ''
-    });
+    const [activity, setActivity] = useState<ActivityFormValues>(new ActivityFormValues());
 
     // I [use] [Yup] this For [Validation] in the [Form]
     const ValidationSchema = Yup.object({
@@ -47,12 +38,12 @@ export default observer(function ActivityForm() {
 
     useEffect(() => {
         if (id) {
-            loadActivity(id).then(activity => setActivity(activity!))
+            loadActivity(id).then(activity => setActivity(new ActivityFormValues(activity)))
         }
     }, [id, loadActivity])
 
-    function handleFormSubmit(activity: Activity){
-        if(activity.id.length === 0)
+    function handleFormSubmit(activity: ActivityFormValues){
+        if(!activity.id)
         {
             let newActivity = {
                 ...activity,
@@ -101,7 +92,7 @@ export default observer(function ActivityForm() {
 
                         <Button
                             disabled={isSubmitting || !dirty || !isValid}
-                            loading={loading} floated='right'
+                            loading={isSubmitting} floated='right'
                             positive type='submit' content='Submit' />
                         <Button as={Link} to='/activities' floated='right' type='button' content='Cancel' />
                     </Form>
