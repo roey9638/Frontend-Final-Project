@@ -27,19 +27,14 @@ interface Props {
 export default observer(function ActivityDetailedHeader({ activity }: Props) {
 
     const { activityStore: { updateAttendance, loading, cancelActivityToggle } } = useStore();
-
     return (
         <Segment.Group>
-
             <Segment basic attached='top' style={{ padding: '0' }}>
-
                 {activity.isCancelled &&
                     <Label style={{ position: 'absolute', zIndex: 1000, left: -14, top: 20 }}
                         ribbon color='red' content='Cancelled' />
                 }
-
                 <Image src={`/assets/categoryImages/${activity.category}.jpg`} fluid style={activityImageStyle} />
-
                 <Segment style={activityImageTextStyle} basic>
                     <Item.Group>
                         <Item>
@@ -51,15 +46,13 @@ export default observer(function ActivityDetailedHeader({ activity }: Props) {
                                 />
                                 <p>{format(activity.date!, 'dd MMM yyyy')}</p>
                                 <p>
-                                    Hosted by <strong> <Link to={`/profiles/${activity.host?.username}`}> {activity.host?.displayName} </Link> </strong>
+                                    Hosted by <strong><Link to={`/profiles/${activity.host?.username}`}>{activity.host?.displayName}</Link></strong>
                                 </p>
                             </Item.Content>
                         </Item>
                     </Item.Group>
                 </Segment>
-
             </Segment>
-
             <Segment clearing attached='bottom'>
                 {activity.isHost ? (
                     <>
@@ -71,7 +64,6 @@ export default observer(function ActivityDetailedHeader({ activity }: Props) {
                             onClick={cancelActivityToggle}
                             loading={loading}
                         />
-
                         <Button as={Link}
                             disabled={activity.isCancelled}
                             to={`/manage/${activity.id}`}
@@ -80,14 +72,13 @@ export default observer(function ActivityDetailedHeader({ activity }: Props) {
                             Manage Event
                         </Button>
                     </>
+
                 ) : activity.isGoing ? (
-
                     <Button loading={loading} onClick={updateAttendance}>Cancel attendance</Button>
-
                 ) : (
-
-                    <Button disabled={activity.isCancelled} loading={loading} onClick={updateAttendance} color='teal'>
-                        Join Activity
+                    <Button disabled={activity.isCancelled}
+                        loading={loading} onClick={updateAttendance} color='teal'>
+                            Join Activity
                     </Button>
                 )}
             </Segment>

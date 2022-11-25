@@ -8,9 +8,7 @@ import * as Yup from 'yup';
 import ValidationErrors from '../errors/ValidationErrors';
 
 export default observer(function RegisterForm() {
-
     const { userStore } = useStore();
-
     return (
         <Formik
             initialValues={{ displayName: '', username: '', email: '', password: '', error: null }}
@@ -23,16 +21,18 @@ export default observer(function RegisterForm() {
                 password: Yup.string().required(),
             })}
         >
+            
             {({ handleSubmit, isSubmitting, errors, isValid, dirty }) => (
                 <Form className='ui form error' onSubmit={handleSubmit} autoComplete='off'>
-                    <Header as='h2' content='Sign up Now' color='teal' textAlign='center' />
+                    <Header as='h2' content='Sign up to Reactivites' color='teal' textAlign='center' />
                     <MyTextInput name='displayName' placeholder='Display Name' />
                     <MyTextInput name='username' placeholder='Username' />
                     <MyTextInput name='email' placeholder='Email' />
                     <MyTextInput name='password' placeholder='Password' type='password' />
                     <ErrorMessage
-                        name='error'
-                        render={() => <ValidationErrors errors={errors.error} /> } />
+                        name='error' render={() =>
+                            <ValidationErrors errors={errors.error} />}
+                    />
                     <Button disabled={!isValid || !dirty || isSubmitting}
                         loading={isSubmitting} positive content='Register' type='submit' fluid />
                 </Form>

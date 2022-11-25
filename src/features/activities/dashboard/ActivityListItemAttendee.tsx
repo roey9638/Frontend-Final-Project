@@ -6,19 +6,31 @@ import { Profile } from '../../../app/Models/profile'
 import ProfileCard from '../../profiles/ProfileCard';
 
 interface Props {
-    attendess: Profile[];
+    attendees: Profile[];
 }
 
-export default observer(function ActivityListItemAttendee({ attendess }: Props) {
+export default observer(function ActivityListItemAttendee({ attendees }: Props) {
+    // const styles = {
+    //     borderColor: 'orange',
+    //     borderWidth: 2
+    // }
 
     return (
         <List horizontal>
-            {attendess.map(attendee => (
-                <Popup hoverable key={attendee.username} trigger= {
-                    <List.Item key={attendee.username} as={Link} to={`/profiles/${attendee.username}`}>
-                        <Image size='mini' circular src={attendee.image || '/assets/user.png'} />
-                    </List.Item>
-                }>
+            {attendees.map(attendee => (
+                <Popup
+                    hoverable
+                    key={attendee.username}
+                    trigger={
+                        <List.Item key={attendee.username} as={Link} to={`/profiles/${attendee.username}`}>
+                            <Image 
+                                size='mini' 
+                                circular src={attendee.image || '/assets/user.png'} 
+                                bordered
+                            />
+                        </List.Item>
+                    }
+                >
                     <Popup.Content>
                         <ProfileCard profile={attendee} />
                     </Popup.Content>
@@ -28,3 +40,4 @@ export default observer(function ActivityListItemAttendee({ attendess }: Props) 
         </List>
     )
 })
+

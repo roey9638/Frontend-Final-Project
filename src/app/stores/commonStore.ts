@@ -17,15 +17,12 @@ export default class CommonStore {
         reaction(
             () => this.token,
             token => {
-                if(token)
-                {
+                if (token) {
                     window.localStorage.setItem('jwt', token)
-                }
-                else
-                {
+                } else {
                     window.localStorage.removeItem('jwt')
                 }
-            } 
+            }
         )
     }
 
@@ -34,7 +31,7 @@ export default class CommonStore {
     }
 
     setToken = (token: string | null) => {
-        this.token = token;    
+        this.token = token;
     }
 
     setAppLoaded = () => {
