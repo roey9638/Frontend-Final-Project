@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import {Button, Header, Segment} from "semantic-ui-react";
+import { Button, Header, Segment } from "semantic-ui-react";
 import axios from 'axios';
 import ValidationErrors from './ValidationErrors';
 
 export default function TestErrors() {
-    const baseUrl = 'http://localhost:5000/api/'
+    const baseUrl = process.env.REACT_APP_API_URL;
 
-    const [errors,setErrors] = useState(null);
+    const [errors, setErrors] = useState(null);
 
     function handleNotFound() {
         axios.get(baseUrl + 'buggy/not-found').catch(err => console.log(err.response));
@@ -46,9 +46,7 @@ export default function TestErrors() {
                 </Button.Group>
             </Segment>
 
-            {/* Here i want to [check] that the [errors state] is [not empty] which we [set him] in the [handleValidationError] [function] in the [setErrors(err)]*/}
             {errors &&
-                //if we Have [Errors] in the [errors state] will [pass them] [into] the [ValidationErrors Component] in [order] to [display] them.
                 <ValidationErrors errors={errors} />
             }
         </>

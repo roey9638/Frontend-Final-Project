@@ -12,7 +12,6 @@ import ActivityListItemPlaceholder from "./ActivityListItemPlaceholder";
 
 export default observer(function ActivityDashBoard() {
 
-    //Here I'm [destructuring] the [activityStore] fron the [useStore()].
     const { activityStore } = useStore();
     const { loadActivities, activityRegistry, setPagingParams, pagination } = activityStore
     const [loadingNext, setLoadingNext] = useState(false);
@@ -30,7 +29,6 @@ export default observer(function ActivityDashBoard() {
     }, [activityRegistry.size, loadActivities])
 
 
-    //What this do - If The [activityStore.loadingInitial] which is a [property] in [ActivityStore.ts]. then will [return/execute] the [<LoadingComponent content='Loading app' />].
     if (activityStore.loadingInitial && !loadingNext) {
         return <LoadingComponent content='Loading activities...' />
     }

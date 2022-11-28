@@ -11,24 +11,21 @@ import TestErrors from '../../features/errors/TestError';
 import { ToastContainer } from 'react-toastify';
 import NotFound from '../../features/errors/NotFound';
 import ServerError from '../../features/errors/ServerError';
-import LoginForm from '../../features/users/LoginForm';
 import { useStore } from '../stores/store';
 import LoadingComponent from './LoadingComponent';
 import ModalContainer from '../common/modals/ModalContainer';
 import ProfilePage from '../../features/profiles/ProfilePage';
+import PrivateRoute from './PrivateRoute';
 
 
 function App() {
 
-  //This Basically will [create] a [New Instance] of [ActivityForm] in the [Route] we using Down Here VV. Continue DownVV
-  //Basically Every time that the [state] changes in the [ActivityForm].
   const location = useLocation();
 
-  const {commonStore, userStore} = useStore();
+  const { commonStore, userStore } = useStore();
 
-  //The [useEffect] will [Run] [Only] [Once]
   useEffect(() => {
-    if(commonStore.token) {
+    if (commonStore.token) {
       userStore.getUser().finally(() => commonStore.setAppLoaded());
     }
     else {
@@ -37,38 +34,33 @@ function App() {
   }, [commonStore, userStore])
 
 
-  if(!commonStore.appLoaded)
-  {
+  if (!commonStore.appLoaded) {
     return <LoadingComponent content='Loading app...' />
   }
-  
+
   return (
     <>
       <ToastContainer position='bottom-right' hideProgressBar />
 
-      <ModalContainer /> 
+      <ModalContainer />
 
       <Route exact path='/' component={HomePage} />
 
       <Route
-        path={'/(.+)'} // Everything that match the ('/') [plus/(.+)] will be [Rended]
+        path={'/(.+)'}
         render={() => (
           <>
             <NavBar />
-            {/* This [style={{marginTop: '7em'}}] will put are [lists] below the [NavBar] */}
             <Container style={{ marginTop: '7em' }}>
               <Switch>
 
-                <Route exact path='/activities' component={ActivityDashBoard} />
-                <Route path='/activities/:id' component={ActivityDetails} />
-                <Route key={location.key} path={['/createActivity', '/manage/:id']} component={ActivityForm} />
-                <Route path='/profiles/:username' component={ProfilePage} />
-                <Route path='/errors' component={TestErrors} />
+                <PrivateRoute exact path='/activities' component={ActivityDashBoard} />
+                <PrivateRoute path='/activities/:id' component={ActivityDetails} />
+                <PrivateRoute key={location.key} path={['/createActivity', '/manage/:id']} component={ActivityForm} />
+                <PrivateRoute path='/profiles/:username' component={ProfilePage} />
+                <PrivateRoute path='/errors' component={TestErrors} />
                 <Route path='/server-error' component={ServerError} />
-                <Route path='/login' component={LoginForm} />
-
-                {/* Anything that [dosent match] the [Routes] [above this] line^^. Will be t[aken] to this [Route] [NotFound]. To [make] this [work] we [put all] the [Routes] [inside] [<Switch> </Switch>] */}
-                <Route component={NotFound} /> 
+                <Route component={NotFound} />
 
               </Switch>
             </Container>

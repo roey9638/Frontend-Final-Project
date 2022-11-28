@@ -6,7 +6,7 @@ import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
 import { v4 as uuid } from 'uuid';
 import { Formik, Form } from "formik";
-import * as Yup from 'yup'; // I [use] this For [Validation] in the [Form]
+import * as Yup from 'yup';
 import MyTextInput from "../../../app/common/form/MyTextInput";
 import MyTextArea from "./MyTextArea";
 import { categoryOptions } from "../../../app/common/options/categoryOptions";
@@ -18,7 +18,6 @@ import { ActivityFormValues } from "../../../app/Models/activity";
 
 export default observer(function ActivityForm() {
 
-    //The [useHistory] will take to the [Route/Component] that i want. I [use it] in the [handleSubmit()] [function].
     const history = useHistory();
     const { activityStore } = useStore();
     const { createActivity, updateActivity, loadActivity, loadingInitial } = activityStore;
@@ -26,7 +25,6 @@ export default observer(function ActivityForm() {
 
     const [activity, setActivity] = useState<ActivityFormValues>(new ActivityFormValues());
 
-    // I [use] [Yup] this For [Validation] in the [Form]
     const ValidationSchema = Yup.object({
         title: Yup.string().required('The activity Title is required'),
         description: Yup.string().required('The activity description is required'),
@@ -42,17 +40,15 @@ export default observer(function ActivityForm() {
         }
     }, [id, loadActivity])
 
-    function handleFormSubmit(activity: ActivityFormValues){
-        if(!activity.id)
-        {
+    function handleFormSubmit(activity: ActivityFormValues) {
+        if (!activity.id) {
             let newActivity = {
                 ...activity,
                 id: uuid()
             };
             createActivity(newActivity).then(() => history.push(`/activities/${newActivity.id}`))
         }
-        else
-        {
+        else {
             updateActivity(activity).then(() => history.push(`/activities/${activity.id}`))
         }
     }
@@ -65,10 +61,8 @@ export default observer(function ActivityForm() {
     return (
         <Segment clearing>
             <Header content='Activity Details' sub color='teal' />
-            {/* The [enableReinitialize] will [take all] the [property] [coming from] the [activity] in the [initialValues] Continue Down VV*/}
-            {/* Then The [MyTextInput] will be [populated/ Get the (Values)] [According] to the [name] */}
             <Formik
-                validationSchema={ValidationSchema} // I [use] [Yup] this For [Validation] in the [Form]
+                validationSchema={ValidationSchema}
                 enableReinitialize
                 initialValues={activity}
                 onSubmit={values => handleFormSubmit(values)}>

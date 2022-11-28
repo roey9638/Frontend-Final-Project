@@ -12,7 +12,6 @@ export default observer(function ActivityList() {
     const { groupedActivities } = activityStore;
 
     return (
-        //Here ( [group, activities] ) we want the [group] and the [array] of the [activities] [inside] that [group]
         <>
             {groupedActivities.map(([group, activities]) => (
                 <Fragment key={group}>
